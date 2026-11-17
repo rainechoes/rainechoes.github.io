@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rain Echoes — Lo-Fi & Ecosystem</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            color: #f8fafc;
+            overflow-x: hidden;
+            background: transparent !important;
+        }
+
+        /* Imagem de fundo do Google Drive configurada em link direto para GitHub Pages */
+        .bg-wallpaper {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #060913;
+            background-image: url('https://lh3.googleusercontent.com/d/1nUY9u5KGEvkxS381elawR1YcPjagD_D6');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 36px 20px 60px;
+        }
+
+        /* Glassmorphism translúcido */
+        .hero-banner {
+            background: rgba(8, 12, 22, 0.35);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 28px;
+            padding: 36px 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            margin-bottom: 35px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #38bdf8, transparent);
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        .avatar-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #38bdf8;
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
+        }
+
+        .status-badge {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            background: #10b981;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid #080c16;
+        }
+
+        .brand-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .brand-desc {
+            font-size: 14px;
+            color: #e2e8f0;
+            line-height: 1.6;
+            max-width: 600px;
+            font-weight: 400;
+            margin-bottom: 24px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+
+        .social-dock {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .social-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 18px;
+            border-radius: 50px;
+            color: #f8fafc;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .social-chip:hover {
+            background: rgba(56, 189, 248, 0.3);
+            border-color: #38bdf8;
+            transform: translateY(-2px);
+        }
+
+        .chip-linktree { color: #43e660; }
+        .chip-whatsapp { color: #25d366; }
+        .chip-telegram { color: #229ed9; }
+        .chip-youtube  { color: #ff0000; }
+        .chip-tiktok   { color: #f8fafc; }
+
+        .section-heading {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #e2e8f0;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+        }
+
+        .section-heading::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .bento-card {
+            background: rgba(8, 12, 22, 0.35);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 22px;
+            text-decoration: none;
+            color: #f8fafc;
+            display: flex;
+            gap: 18px;
+            align-items: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+        }
+
+        .bento-card:hover {
+            transform: translateY(-4px);
+            border-color: #38bdf8;
+            background: rgba(8, 12, 22, 0.5);
+        }
+
+        .card-icon-box {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+        }
+
+        .icon-vip      { background: linear-gradient(135deg, #0284c7, #0369a1); color: #fff; }
+        .icon-shopee   { background: linear-gradient(135deg, #f97316, #ea580c); color: #fff; }
+        .icon-ml       { background: linear-gradient(135deg, #eab308, #ca8a04); color: #1e293b; }
+        .icon-amazon   { background: linear-gradient(135deg, #334155, #0f172a); color: #ff9900; border: 1px solid rgba(255, 153, 0, 0.3); }
+        .icon-books    { background: linear-gradient(135deg, #1d4ed8, #1e3a8a); color: #fff; }
+
+        .card-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .card-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+        }
+
+        .card-desc {
+            font-size: 12px;
+            color: #cbd5e1;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+        }
+
+        .card-arrow {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 12px;
+            color: #94a3b8;
+            opacity: 0;
+            transform: translate(-4px, 4px);
+            transition: all 0.2s ease;
+        }
+
+        .bento-card:hover .card-arrow {
+            opacity: 1;
+            transform: translate(0, 0);
+            color: #38bdf8;
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                padding: 20px 14px 45px;
+            }
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-banner {
+                padding: 28px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-wallpaper"></div>
+
+    <div class="app-container">
+        
+        <div class="hero-banner">
+            <div class="avatar-wrapper">
+                <img src="https://drive.google.com/thumbnail?id=1Rfuiz95yi-KUx5gLKnJIILoJXiIPwTMr&sz=w1000" alt="Rain Echoes" class="avatar-img">
+                <div class="status-badge" title="Online / Canal Ativo"></div>
+            </div>
+            
+            <h1 class="brand-title">Rain Echoes</h1>
+            <p class="brand-desc">
+                Um ecossistema imersivo focado em sonoridades lofi para foco e relaxamento, aliado à curadoria inteligente dos melhores achados e cupons da web.
+            </p>
+
+            <div class="social-dock">
+                <a href="https://linktr.ee/rainecho" target="_blank" rel="noopener noreferrer" class="social-chip">
+                    <i class="fa-solid fa-tree chip-linktree"></i> Links
+                </a>
+                <a href="https://www.whatsapp.com/channel/0029VbDTO6k59PwR0xz45N3h" target="_blank" rel="noopener noreferrer" class="social-chip">
+                    <i class="fa-brands fa-whatsapp chip-whatsapp"></i> WhatsApp
+                </a>
+                <a href="https://t.me/rainecho93" target="_blank" rel="noopener noreferrer" class="social-chip">
+                    <i class="fa-brands fa-telegram chip-telegram"></i> Telegram
+                </a>
+                <a href="https://www.youtube.com/@rainecho93" target="_blank" rel="noopener noreferrer" class="social-chip">
+                    <i class="fa-brands fa-youtube chip-youtube"></i> YouTube
+                </a>
+                <a href="https://www.tiktok.com/@rainecho93" target="_blank" rel="noopener noreferrer" class="social-chip">
+                    <i class="fa-brands fa-tiktok chip-tiktok"></i> TikTok
+                </a>
+            </div>
+        </div>
+
+        <div class="section-heading">Ecossistema de Ofertas & Lojas</div>
+
+        <div class="bento-grid">
+
+            <a href="https://tr.ee/zJKnNObx8F" target="_blank" rel="noopener noreferrer" class="bento-card">
+                <div class="card-icon-box icon-vip">
+                    <i class="fa-solid fa-crown"></i>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Grupo VIP de Ofertas</h3>
+                    <p class="card-desc">Alertas em tempo real com cupons exclusivos antes que o estoque acabe.</p>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square card-arrow"></i>
+            </a>
+
+            <a href="https://collshp.com/rainechoes" target="_blank" rel="noopener noreferrer" class="bento-card">
+                <div class="card-icon-box icon-shopee">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Vitrine Shopee</h3>
+                    <p class="card-desc">Achadinhos úteis, eletrônicos e decoração com os melhores descontos.</p>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square card-arrow"></i>
+            </a>
+
+            <a href="https://tr.ee/Xv2yUZwO6D" target="_blank" rel="noopener noreferrer" class="bento-card">
+                <div class="card-icon-box icon-ml">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Achados Mercado Livre</h3>
+                    <p class="card-desc">Seleção especial com entrega rápida e descontos agressivos.</p>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square card-arrow"></i>
+            </a>
+
+            <a href="https://www.amazon.com.br/shop/rainecho93" target="_blank" rel="noopener noreferrer" class="bento-card">
+                <div class="card-icon-box icon-amazon">
+                    <i class="fa-brands fa-amazon"></i>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Loja Oficial Amazon</h3>
+                    <p class="card-desc">Recomendações organizadas por categorias essenciais para o seu dia a dia.</p>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square card-arrow"></i>
+            </a>
+
+            <a href="https://link.amazon/B08yJHFHi" target="_blank" rel="noopener noreferrer" class="bento-card">
+                <div class="card-icon-box icon-amazon">
+                    <i class="fa-solid fa-gift"></i>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Achados Amazon Diversos</h3>
+                    <p class="card-desc">Gadgets, casa inteligente e achados variados com preços especiais.</p>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square card-arrow"></i>
+            </a>
+
+            <a href="https://tr.ee/EPo7pOyai5" target="_blank" rel="noopener noreferrer" class="bento-card">
+                <div class="card-icon-box icon-books">
+                    <i class="fa-solid fa-book-bookmark"></i>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Achados Amazon - Livros</h3>
+                    <p class="card-desc">Leituras indispensáveis e clássicos em promoção para acompanhar suas sessões.</p>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square card-arrow"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
